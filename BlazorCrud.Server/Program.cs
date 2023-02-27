@@ -14,6 +14,14 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<DbcrudBlazorContext>(opciones =>
 {opciones.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnectionString"));});
+builder.Services.AddCors(opciones => {
+    opciones.AddPolicy("nuevaPolitica", app =>
+    {
+        app.AllowAnyOrigin()
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
 
@@ -23,7 +31,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseCors("nuevaPolitica");
 app.UseAuthorization();
 
 app.MapControllers();

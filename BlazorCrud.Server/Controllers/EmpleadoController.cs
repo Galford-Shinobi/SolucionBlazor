@@ -132,6 +132,22 @@ namespace BlazorCrud.Server.Controllers
                 }
 
             }
+            catch (DbUpdateException dbUpdateException)
+            {
+                if (dbUpdateException.InnerException!.Message.Contains("duplicate"))
+                {
+                    responseApi.EsCorrecto = false;
+                    responseApi.Mensaje = "Ya existe un Empleado con el mismo nombre";
+                   
+                }
+                else
+                {
+                    responseApi.EsCorrecto = false;
+                    responseApi.Mensaje = dbUpdateException.InnerException.Message;
+
+                }
+                return BadRequest(responseApi);
+            }
             catch (Exception ex)
             {
 
@@ -179,6 +195,22 @@ namespace BlazorCrud.Server.Controllers
                     responseApi.Mensaje = "Empleado no econtrado";
                 }
 
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                if (dbUpdateException.InnerException!.Message.Contains("duplicate"))
+                {
+                    responseApi.EsCorrecto = false;
+                    responseApi.Mensaje = "Ya existe un Empleado con el mismo nombre";
+
+                }
+                else
+                {
+                    responseApi.EsCorrecto = false;
+                    responseApi.Mensaje = dbUpdateException.InnerException.Message;
+
+                }
+                return BadRequest(responseApi);
             }
             catch (Exception ex)
             {
